@@ -1,0 +1,25 @@
+# Dependencies / builds
+node_modules/
+dist/
+.vite/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+
+# Data, weights & logs (not versioned)
+data/
+backend/weights/*.pt
+*.onnx
+*.log
+*_log.txt
+*_out.txt
+*_err.txt
+
+# Env / IDE
+.env
+.vscode/

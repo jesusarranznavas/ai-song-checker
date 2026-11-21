@@ -1,0 +1,14 @@
+data/
+training/
+frontend/react-src/node_modules/
+frontend/react-src/dist/
+frontend/node_modules/
+frontend/uploads/
+frontend/src/
+**/__pycache__/
+**/*.pyc
+.git/
+*.md
+TFG antiguo/
+debug_inference.txt
+training/train_log.txt
