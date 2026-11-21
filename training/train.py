@@ -32,6 +32,8 @@ def main():
     ap.add_argument("--sample_rate", type=int, default=16000)
     ap.add_argument("--fine_tune_encoder", action="store_true", help="afinar encoder (más VRAM)")
     ap.add_argument("--encoder_lr", type=float, default=1e-5, help="lr para el encoder cuando se afina")
+    ap.add_argument("--encoder_weights", type=str, default=os.path.join("backend", "weights", "model.pt"),
+                    help="pesos iniciales del encoder MERT (checkpoint del proyecto o pytorch_model.bin de MERT)")
     args = ap.parse_args()
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -48,7 +50,9 @@ def main():
         val_ds, batch_size=args.batch_size, shuffle=False, num_workers=0, collate_fn=collate
     )
 
-    bundle = build_model(labels=LABELS)
+    if not os.path.exists(args.encoder_weights):
+        raise SystemExit(f"No existe {args.encoder_weights}. Ejecuta: python scripts/download_weights.py")
+    bundle = build_model(labels=LABELS, encoder_weights=args.encoder_weights)
     encoder = bundle.encoder.to(device).eval()
     head = bundle.head.to(device).train()
 

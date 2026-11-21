@@ -20,16 +20,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY backend/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Pre-download MERT architecture (baked into image — no internet needed at runtime)
-RUN python -c "from transformers import AutoModel; AutoModel.from_pretrained('m-a-p/MERT-v1-95M', trust_remote_code=True)"
-
-# Copy backend code and model weights
+# Backend code (MERT architecture is vendored in backend/app/mert)
 COPY backend/ ./backend/
+COPY scripts/ ./scripts/
 
-# Copy built frontend
+# Model weights: uses backend/weights/model.pt if present, otherwise downloads it
+# from GitHub Releases
+RUN python scripts/download_weights.py
+
+# Built frontend
 COPY --from=frontend-builder /app/dist ./static/
 
-# HuggingFace Spaces requires port 7860
-EXPOSE 7860
+EXPOSE 8000
 
-CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "7860"]
+CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -9,6 +9,7 @@ import torchaudio
 
 from .model import build_model, encode_mean
 from .calibrate import load_temperature, apply_temperature
+from .weights import ensure_weights
 
 WEIGHTS_DIR = os.path.join(os.path.dirname(__file__), "..", "weights")
 
@@ -22,9 +23,8 @@ class InferenceEngine:
         self.temperature_path = os.path.join(WEIGHTS_DIR, "temperature.json")
         self.temperature = load_temperature(self.temperature_path)
 
-        self.weights_path = os.path.join(WEIGHTS_DIR, "model.pt")
-        if os.path.exists(self.weights_path):
-            self.load(self.weights_path)
+        self.weights_path = ensure_weights(os.path.join(WEIGHTS_DIR, "model.pt"))
+        self.load(self.weights_path)
 
     def load(self, path: str):
         ckpt = torch.load(path, map_location=self.device)

@@ -96,7 +96,7 @@ export default function Home() {
       <section className="section container" style={{ paddingTop: 0 }}>
         <div className="stat-strip liquid-glass reveal">
           <div className="stat"><div className="num text-grad">3</div><div className="lbl">Classes: human · modified · AI</div></div>
-          <div className="stat"><div className="num text-grad">100%</div><div className="lbl">Processing on HuggingFace</div></div>
+          <div className="stat"><div className="num text-grad">100%</div><div className="lbl">Local processing</div></div>
           <div className="stat"><div className="num text-grad">0</div><div className="lbl">Data retained on server</div></div>
         </div>
       </section>
